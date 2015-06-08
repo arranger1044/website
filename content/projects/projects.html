@@ -1,0 +1,33 @@
+---
+extends: minimal.j2
+default_block: main
+title: Open Source Projects
+description: Open Source Projects Authored and Contributed to
+---
+
+<h1>Open Source Projects</h1>
+<hr/>
+
+{% for res in resource.node['resources']|sort(attribute='meta.created') %}
+{% if res.meta.title != resource.meta.title %}
+  <h2><a href="{{res.meta.url}}">{{res.meta.title}}</a></h2>
+<p> {{res.meta.description}}
+  {% set show_details = [] %}
+  {% for d in details %}
+    {% if d in res.meta.__dict__  %}
+       {% do show_details.append(d) %}
+    {% endif %}
+  {% endfor %}
+  
+  {% if show_details %}
+     [{% for d in show_details %}
+         <a href="{{res.meta.__dict__[d]}}">{{d}}</a>
+	 {% if loop.index < show_details|length %}
+	 | 
+	{% endif %}
+     {% endfor %}]
+  {% endif %}
+  </p>
+  <hr/>
+  {% endif %}
+  {% endfor %}
