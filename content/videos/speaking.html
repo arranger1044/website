@@ -1,0 +1,37 @@
+---
+extends: minimal.j2
+default_block: main
+title: Talks and Presentations
+description: Videos of Talks and Presentations by Jake Vanderplas
+---
+<h1>Videos of Talks and Presentations</h1>
+
+<p>Below I list a few of the talks, lectures, and tutorials I've given for
+  which video is available online.</p>
+<hr/>
+
+{% set details = ['Video', 'notebook',
+                  'Part 1.1', 'Part 1.2',
+                  'Part1.3', 'Part 2.1', 'Part 2.2', 'Part 2.3'] %}
+
+{% for res in resource.node['resources']|sort(attribute='meta.created')|reverse %}
+{% if res.meta.title != resource.meta.title %}
+<small>{{res.meta.created.strftime('%B, %Y')}}</small>
+  <h2>{{res.meta.title}}</h2>
+<p><b>{{res.meta.where}}:</b> {{res.meta.description}}
+  {% set show_details = [] %}
+  {% for d in details %}
+    {% if d in res.meta.__dict__  %}
+       {% do show_details.append(d) %}
+    {% endif %}
+  {% endfor %}
+  
+  {% if show_details %}
+     [{% for d in show_details %}
+  <a href="{{res.meta.__dict__[d]}}">{{d}}</a>
+  {% if loop.index < show_details|length %}|{% endif %}{% endfor %}]
+  {% endif %}
+  </p>
+  <hr/>
+  {% endif %}
+  {% endfor %}
