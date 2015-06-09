@@ -8,7 +8,7 @@ content/media/pdfs/CV.pdf: CV/CV.tex
 	cp CV/CV.pdf content/media/pdfs/
 
 gen: CV
-	hyde gen
+	hyde gen -r
 
 serve: clean gen
 	hyde serve
